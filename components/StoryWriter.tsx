@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 
+const storiesPath ="public/stories";
 
 function StoryWriter() {
     const [story, setStory] = useState<string>("");
@@ -13,6 +14,26 @@ function StoryWriter() {
     const [progress, setProgress] = useState("");
     const [runStarted, setRunStarted] = useState<boolean>(false);
     const [runFinished, setRunFinished] = useState<boolean | null>(null);
+    const [currentTool, setCurrentTool] = useState("");
+
+    async function runScript() {
+        setRunStarted(true);
+        setRunFinished(false);
+         const response = await fetch('/api/run-script'. {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify({
+                story,
+                pages,
+                path: storiesPath,
+                tool: currentTool,
+            }),
+
+         })
+    }
 
     return (
         <div className="flex flex-col container">
@@ -40,8 +61,10 @@ function StoryWriter() {
                     </SelectContent>
                 </Select>
                 <Button
-                    disabled={!story || !pages}
-                    className="w-full" size='lg'>
+                    disabled={!story || !pages || runStarted}
+                    className="w-full" size='lg'
+                    onClick={runScript}
+                    >
                     Generate Story
                 </Button>
 
