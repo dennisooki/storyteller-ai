@@ -19,7 +19,7 @@ function StoryWriter() {
     async function runScript() {
         setRunStarted(true);
         setRunFinished(false);
-         const response = await fetch('/api/run-script'. {
+         const response = await fetch('/api/run-script', {
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json',
@@ -29,10 +29,17 @@ function StoryWriter() {
                 story,
                 pages,
                 path: storiesPath,
-                tool: currentTool,
+                // tool: currentTool,
             }),
 
-         })
+         });
+         if (response.ok && response.body){
+
+         } else{
+            setRunFinished(true);
+            setRunStarted(false);
+            console.error("Failed to start streaming");
+         }
     }
 
     return (
