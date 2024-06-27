@@ -34,7 +34,7 @@ function StoryWriter() {
 
          });
          if (response.ok && response.body){
-
+            console.error("Streaming started");
          } else{
             setRunFinished(true);
             setRunStarted(false);
